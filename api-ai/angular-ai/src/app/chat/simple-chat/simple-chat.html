@@ -6,10 +6,15 @@
     </mat-toolbar>
   </div>
   <div class="chat-history">
-    <div class="message">
+    <div class="messages">
       @for (message of messages(); track $index) {
       <div class="message">
-        <div class="message-bubble">{{ message.text }}</div>
+        <div
+          class="message-bubble"
+          [ngClass]=" {'user-message' : !message.isBot}"
+        >
+          {{ message.text }}
+        </div>
       </div>
       }
     </div>
@@ -18,8 +23,17 @@
   <div class="chat-input">
     <mat-form-field class="full-width">
       <mat-label>Ask me anything</mat-label>
-      <input matInput />
-      <button matIconButton matSuffix aria-label="Send">
+      <input
+        matInput
+        [(ngModel)]="userPrompt"
+        (keyup.enter)="onSendMessage()"
+      />
+      <button
+        matIconButton
+        matSuffix
+        aria-label="Send"
+        (click)="onSendMessage()"
+      >
         <mat-icon>send</mat-icon>
       </button>
     </mat-form-field>
