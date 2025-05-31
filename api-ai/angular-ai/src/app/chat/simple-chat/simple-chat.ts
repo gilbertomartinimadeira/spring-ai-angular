@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
@@ -23,7 +23,12 @@ import { NgClass } from '@angular/common';
 })
 export class SimpleChat {
 
+  @ViewChild('chatHistory')
+  private chatHistory!: ElementRef;
+
   userPrompt = 'bla bla bla';
+  isLoading = false;
+
 
   messages = signal([
     {
@@ -33,13 +38,17 @@ export class SimpleChat {
   ]);
 
   onSendMessage() {
+
     this.trimUserPrompt();
-    if (this.userPrompt !== '') {
+    if (this.userPrompt !== '' && !this.isLoading) {
       this.updateMessages(this.userPrompt)
+      this.userPrompt = '';
+      this.simulateResponse();
     }
-    this.userPrompt = '';
-    this.simulateResponse();
+
   }
+
+
   private trimUserPrompt() {
     this.userPrompt = this.userPrompt.trim();
   }
@@ -48,11 +57,22 @@ export class SimpleChat {
     setTimeout(() => {
       const response = 'This is a simulated response from Chat AI';
       this.updateMessages(response, true);
+      this.isLoading = false;
     }, 2000);
 
   }
 
   private updateMessages(text: string, isBot = false) {
     this.messages.update(messages => [...messages, { text: text, isBot: isBot }]);
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom() {
+    try {
+      const nEl = this.chatHistory.nativeElement;
+      nEl.scrollTop = nEl.scrollHeight;
+    } catch (error) {
+
+    }
   }
 }
