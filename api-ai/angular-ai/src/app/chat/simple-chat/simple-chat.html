@@ -1,1 +1,27 @@
 <p>simple-chat works!</p>
+<mat-card class="chat-container">
+  <div>
+    <mat-toolbar>
+      <span>Simple Chat</span>
+    </mat-toolbar>
+  </div>
+  <div class="chat-history">
+    <div class="message">
+      @for (message of messages(); track $index) {
+      <div class="message">
+        <div class="message-bubble">{{ message.text }}</div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <mat-form-field class="full-width">
+      <mat-label>Ask me anything</mat-label>
+      <input matInput />
+      <button matIconButton matSuffix aria-label="Send">
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</mat-card>
