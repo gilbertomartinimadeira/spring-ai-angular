@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/chat")
 public class ChatController {
@@ -16,10 +17,11 @@ public class ChatController {
     }
 
     @PostMapping
-    String generation(ChatMessage message) {
-        return this.chatClient.prompt()
+    ChatMessage simpleChatResponse(@RequestBody ChatMessage message) {
+        var response = this.chatClient.prompt()
             .user(message.text())
             .call()
-            .content();
+            .content().toString();
+        return new ChatMessage(response);
     }
 }

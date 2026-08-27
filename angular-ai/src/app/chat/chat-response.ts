@@ -1,4 +1,4 @@
 export interface ChatResponse {
-  message: string;
+  text: string;
   isBot: boolean;
 }

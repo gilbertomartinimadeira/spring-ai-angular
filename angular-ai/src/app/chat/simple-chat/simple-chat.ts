@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { catchError, throwError } from 'rxjs';
 
 
 @Component({
@@ -32,7 +33,7 @@ export class SimpleChat {
 
   isLoading = false;
 
-  isLocal = true;
+  isLocal = false;
 
   messages = signal([
     { text: 'Hello, How can I help you today?', isBot: true}
@@ -44,15 +45,15 @@ export class SimpleChat {
       this.trimUserInput();
       this.updateMessages(this.userInput, false);
       this.isLoading = true;
-      this.userInput = ``;
     }
 
 
-    this.isLocal && this.simulateResponse();
+    this.isLocal ? this.simulateResponse() : this.sendChatMessage();
+
 
     console.log('Input Received >> ' + this.userInput );
 
-
+    this.userInput = ``;
   };
 
   private trimUserInput() {
@@ -77,5 +78,22 @@ export class SimpleChat {
     try {
       this.chatHistory.nativeElement.scrollTop = this.chatHistory.nativeElement.scrollHeight;
     } finally {}
+  }
+
+  private sendChatMessage() {
+    this.chatService.sendChatMessage(this.userInput)
+                    .pipe(
+                      catchError( _ => {
+                        this.updateMessages("Sorry I wasn`t able to send your message",true);
+                        this.isLoading = false;
+                        return throwError(() => {
+                          new Error("An error happened during the message delivery")
+                        })
+                      })
+                    )
+                    .subscribe(response => {
+      this.updateMessages(response.text, true);
+      this.isLoading = false;
+    });
   }
 }
