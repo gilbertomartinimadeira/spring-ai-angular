@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Service()
 export class ChatService {
-  private readonly API = '/api/chat';
+  private readonly API = '/api/chat-memory';
 
   private httpClient = inject(HttpClient);
 
