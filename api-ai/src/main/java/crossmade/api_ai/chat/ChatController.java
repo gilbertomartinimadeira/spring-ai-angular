@@ -2,7 +2,6 @@ package crossmade.api_ai.chat;
 
 import crossmade.api_ai.memory.MemoryChatService;
 
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

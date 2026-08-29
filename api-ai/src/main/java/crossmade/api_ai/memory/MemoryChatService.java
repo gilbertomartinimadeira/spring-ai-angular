@@ -1,10 +1,12 @@
 package crossmade.api_ai.memory;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 
 import crossmade.api_ai.chat.ChatMessage;
@@ -14,10 +16,11 @@ public class MemoryChatService {
 
     private final ChatClient chatClient;
     
-    public MemoryChatService(ChatClient.Builder chatClientBuilder) {
+    public MemoryChatService(ChatClient.Builder chatClientBuilder, ChatMemoryRepository chatMemoryRepository) {
 
         var chatMemory = MessageWindowChatMemory.builder()
                                                 .maxMessages(2)
+                                                .chatMemoryRepository(chatMemoryRepository)
                                                 .build();
 
 
