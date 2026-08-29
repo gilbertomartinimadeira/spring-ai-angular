@@ -35,6 +35,8 @@ export class SimpleChat {
 
   isLocal = false;
 
+  conversationId = "my_custom_conversation";
+
   messages = signal([
     { text: 'Hello, How can I help you today?', isBot: true}
   ]);
@@ -81,7 +83,8 @@ export class SimpleChat {
   }
 
   private sendChatMessage() {
-    this.chatService.sendChatMessage(this.userInput)
+    console.log("ConversationID: " + this.conversationId);
+    this.chatService.sendChatMessage(this.userInput, this.conversationId)
                     .pipe(
                       catchError( _ => {
                         this.updateMessages("Sorry I wasn`t able to send your message",true);

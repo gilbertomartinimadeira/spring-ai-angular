@@ -1,7 +1,9 @@
 package crossmade.api_ai.chat;
 
 import crossmade.api_ai.memory.MemoryChatService;
-import crossmade.api_ai.chat.ChatMessage;
+
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,9 @@ public class ChatController {
 
     @PostMapping
     ChatMessage simpleChatResponse(@RequestBody ChatMessage message) {
-        return this.memoryChatService.simpleChat(message.text());
+        return this.memoryChatService
+                   .simpleChat(
+                    message.text(), 
+                    message.conversationId());
     }
 }

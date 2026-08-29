@@ -1,5 +1,5 @@
 package crossmade.api_ai.chat;
 
-public record ChatMessage(String text) {
+public record ChatMessage(String text, String conversationId) {
 
 }
